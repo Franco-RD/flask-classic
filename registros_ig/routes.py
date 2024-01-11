@@ -24,6 +24,7 @@ def index():
     dic = select_all()
     return render_template("index.html", datos = dic)
 
+
 @app.route("/new", methods=["GET", "POST"])
 def create():
     if request.method == "GET":
@@ -34,5 +35,7 @@ def create():
         if errores:
             return render_template("create.html", errors = errores, dataForm = request.form)
         
-        return f"Enviar los datos a la base {request.form}"
+        else:
+            insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos
+            return redirect("/")
     
