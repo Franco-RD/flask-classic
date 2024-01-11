@@ -1,77 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de cuentas: Lista</title>
-    <link rel="stylesheet" href="static/pico.css">
-    <link rel="stylesheet" href="static/styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" /> {# Link para el boton de editar #}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" /> {# Link para el boton de eliminar #}
-</head>
+{% extends "base.html" %}    {# Esto hereda todo de base #}
+{% block section %}          {# Esto agrega lo que codeamos al bloque section #}
+<h1>Lista de movimientos</h1>
 
-<body>   
+<table role="grid">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Concepto</th>
+            <th>Monto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in datos %}
+        <tr>
+            <td>{{item.date}}</td>
+            <td>{{item.concept}}</td>
+            <td>{{item.quantity}}€</td>
+            <td>
+                <a href="#">
+                <span class="material-symbols-outlined">
+                edit
+                </span>
+                </a>
+                <a href="#">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 
-    <header>
-        <div class="container">  {# El class="container" es para que un elemento no valla de punta a punta de la pantalla #}
-            <nav>
-                <ul>
-                  <li><strong>App Ingresos/Gastos</strong></li>
-                </ul>
-                <ul>
-                  <li><a href="#" role="button">Inicio</a></li>
-                  <li><a href="#" role="button">Nuevo</a></li>                
-                </ul>
-              </nav>
-        </div>
-    </header>
-
-
-    <section class="container">
-
-        <h1>Lista de movimientos</h1>
-
-        <table role="grid">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Concepto</th>
-                    <th>Monto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in variable %}
-                <tr>
-                    <td>{{item.fecha}}</td>
-                    <td>{{item.concept}}</td>
-                    <td>{{item.monto}}€</td>
-                    <td>
-                        <a href="#">
-                        <span class="material-symbols-outlined">
-                        edit
-                        </span>
-                        </a>
-                        <a href="#">
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        
-        </table>
-
-    </section>
-
-
-    <footer>
-        <div class="container">
-            &copy; 2024 Franco
-        </div>        
-    </footer>
-
-</body>
-</html>
+</table>
+{% endblock %}
