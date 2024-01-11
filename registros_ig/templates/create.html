@@ -1,4 +1,24 @@
 {% extends "base.html" %}   
 {% block section %} 
+<form action="/new" method="post">
+
+    <label>Fecha</label>
+    <input type="date" name="date" value="{{dataForm['date']}}">
+    <label>Concepto</label>
+    <input type="text" name="concept" placeholder="Ingrese un concepto" value="{{dataForm['concept']}}">
+    <label>Monto</label>
+    <input type="number" name="quantity" placeholder="Ingrese monto" step="0.01" value="{{dataForm['quantity']}}"> {# El step es para que sea decimal con 2 valores despues de la coma #}
+        
+    <button type="submit">Submit</button>
+    
+</form>
+
+<article>
+    <ul>
+        {% for item in errors %}
+        <li>{{item}}</li>
+        {% endfor %}
+    </ul>
+</article>
 
 {% endblock %}
