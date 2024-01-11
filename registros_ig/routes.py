@@ -36,6 +36,15 @@ def create():
             return render_template("create.html", errors = errores, dataForm = request.form)
         
         else:
-            insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos
+            insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos. Hay que pasar los datos de esta manera porque si se pasa solo request.form da error.
             return redirect("/")
+
+
+@app.route("/delete/<int:id>", methods=["GET", "POST"])
+def delete(id):
+    if request.method == "GET":
+        resultado = select_by(id)
+        return render_template("delete.html", data = resultado)
     
+    else: 
+        return "Registro para eliminar"
