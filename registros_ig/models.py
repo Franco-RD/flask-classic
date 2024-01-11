@@ -1,12 +1,21 @@
-import sqlite3 as sq
-
-con = sq.connect("db_movimientos.sqlite")
-cur = con.cursor()
+import sqlite3
 
 def select_all():
-    diccionario = [{"date":"2024-01-01", "concept":"Nomina Enero", "quantity":1500},
-                    {"date":"2024-01-02", "concept":"Compra de reyes", "quantity":-100},
-                    {"date":"2024-01-03", "concept":"Compra del mercadona", "quantity":-100},
-                    {"date":"2024-01-04", "concept":"Compra de roscon", "quantity":-50}]
+    conexion = sqlite3.connect("data/db_movimientos.sqlite")
+    cur = conexion.cursor()
+    res = cur.execute("select * from movements;")  #res es como un objeto gigante con un monton de cosas
+    filas = res.fetchall()  #res.fetchall() si trae los datos de las columnas nada mas en un a lista de tuplas (1, 2024-01-01, Nomina Enero, 1500)
+    columnas = res.description  #Nombres de columnas en lista de tuplas  (id,0000) (date,0000) (concept,0000) (quantity,0000)
 
-    return diccionario
+    lista_diccionario = []
+    diccionario = {}
+    for f in filas:
+        posicion = 0
+        for c in columnas:
+            diccionario[c[0]] = f[posicion]  # c es cada tupla de (nombre columna, 0000), la posicion 0 es el nombre de la columna. f es una tupla con todos los datos de una fila, por eso va cambiando con posicion. 
+            posicion += 1                    # En cada iteracion de este for agrega al diccionario el nombre de la columna como clave y el valor de f[posicion]. 
+                                             # Cuando termina este for de agregar todos los datos de una fila al diccionario, lo agrega a la lista de diccionarios y pasa a la siguiente fila.
+        lista_diccionario.append(diccionario)
+    
+    return lista_diccionario
+
