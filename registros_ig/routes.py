@@ -1,7 +1,7 @@
 from registros_ig import app
 from flask import render_template, request, redirect, flash  
 from registros_ig.models import *
-from datetime import date
+from datetime import date, datetime
 from registros_ig.forms import MovementsForm
 
 
@@ -41,9 +41,7 @@ def create():
             return redirect("/")
         
         else:
-            return render_template("create.html", dataForm = form)
-        
-        
+            return render_template("create.html", dataForm = form)     
 
 
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
@@ -55,4 +53,23 @@ def delete(id):
     else: 
         delete_by(id)
         flash("Movimiento borrado correctamente")
+        return redirect("/")
+    
+
+@app.route("/update/<int:id>", methods=["GET", "POST"])
+def update(id):
+    form = MovementsForm()
+
+    if request.method == "GET":
+        resultado = select_by(id)
+        #Le pasamos los datos que tenia el registro al formulario para editar
+        form.date.data = datetime.strptime(resultado[1], "%Y-%m-%d")  #Hay que pasar el campo 1 a tipo fecha para que lo acepte el formulario sino da error
+        form.concept.data = resultado[2]
+        form.quantity.data = resultado[3]
+
+        return render_template("update.html", dataForm = form, idForm = id)
+    
+    else:
+        update_by(id, [form.date.data.isoformat(), form.concept.data, form.quantity.data])  #isoformat pasa la fecha a fecha en texto porque el campo de la base de datos de fecha es un text.
+        flash("Movimiento actualizado correctamente")
         return redirect("/")

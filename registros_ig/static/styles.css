@@ -8,7 +8,7 @@ header,footer{
 body{
     min-height: 100vh;  /* Toma el 100% del tamaño de lo que hay en el body */ 
     display: grid;  /* Lo divide en una grilla */ 
-    grid-auto-flow: auto 500px 1fr auto;  /* Y acomoda de manera automatica los puntas de la grilla. El primer auto es para el header y el segundo para el footer. El tamaño del medio es para la section */ 
+    grid-auto-flow: auto auto 1fr auto;  /* Y acomoda de manera automatica los puntas de la grilla. El primer auto es para el header y el segundo para el footer. El tamaño del medio es para la section */ 
     margin: 0;  
 }  
 
