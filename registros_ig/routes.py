@@ -24,7 +24,9 @@ def validarFormulario(datosFormulario):
 @app.route("/")
 def index():
     dic = select_all()
-    return render_template("index.html", datos = dic)
+    ganancia = select_ingreso()
+    gastos = select_egreso()
+    return render_template("index.html", datos = dic, ingreso = ganancia, egreso = gastos)
 
 
 @app.route("/new", methods=["GET", "POST"])
@@ -36,7 +38,7 @@ def create():
     
     else:                 
         if form.validate_on_submit():
-            insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos. Hay que pasar los datos de esta manera porque si se pasa solo request.form da error.
+            insert([form.date.data.isoformat(), form.concept.data, form.quantity.data])  #Llamo a la funcion para insertar datos. Hay que pasar los datos de esta manera porque si se pasa solo request.form da error.
             flash(f"Movimiento {request.form['concept']} registrado correctamente")
             return redirect("/")
         

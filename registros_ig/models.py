@@ -3,7 +3,7 @@ from registros_ig import ORIGIN_DATA
 from registros_ig.conexion import Conexion
 
 def select_all():
-    conectar = Conexion("select * from movements")
+    conectar = Conexion("select * from movements order by date desc;")
     filas = conectar.res.fetchall()  #res.fetchall() si trae los datos de las columnas nada mas en un a lista de tuplas (1, 2024-01-01, Nomina Enero, 1500)
     columnas = conectar.res.description  #Nombres de columnas en lista de tuplas  (id,0000) (date,0000) (concept,0000) (quantity,0000)
 
@@ -48,3 +48,19 @@ def update_by(id, registro):
     conectarUpdateBy = Conexion(f"update movements set date = ? , concept = ?, quantity = ? where id={id};", registro)
     conectarUpdateBy.con.commit()  #Valida el update. Cuando se hacen DELETE tambien hay que usarlo sino no se confirma el borrado.
     conectarUpdateBy.con.close()
+
+
+def select_ingreso():
+    conectarIngreso = Conexion("select sum(quantity) from movements where quantity > 0;")
+    resultadoIngreso = conectarIngreso.res.fetchall()
+    conectarIngreso.con.close()
+
+    return resultadoIngreso[0][0]
+
+
+def select_egreso():
+    conectarEgreso = Conexion("select sum(quantity) from movements where quantity < 0;")
+    resultadoEgreso = conectarEgreso.res.fetchall()
+    conectarEgreso.con.close()
+
+    return resultadoEgreso[0][0]
