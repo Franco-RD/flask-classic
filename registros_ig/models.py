@@ -27,7 +27,7 @@ def select_all():
 def insert(registroForm):
     conexion = sqlite3.connect(ORIGIN_DATA)
     cur = conexion.cursor()
-    res = cur.execute("insert into movements (date, concept, quantity) values (?,?,?);", registroForm)  #Se puede poner ? y luego de la ", se ponen los registros en orden que irian en esos campos. registroForm ya tiene los 3 datos ya que es una lista
+    cur.execute("insert into movements (date, concept, quantity) values (?,?,?);", registroForm)  #Se puede poner ? y luego de la ", se ponen los registros en orden que irian en esos campos. registroForm ya tiene los 3 datos ya que es una lista
     conexion.commit()  #Valida los INSERT. Cuando se hacen INSERT hay que usarlo. Hasta que no se hace el commit no se mandan los insert que hagamos
     conexion.close()
 
@@ -35,6 +35,15 @@ def insert(registroForm):
 def select_by(id):
     conexion = sqlite3.connect(ORIGIN_DATA)
     cur = conexion.cursor()
-    res = cur.execute(f"select * from movements where id={id};")
+    res = cur.execute(f"select * from movements where id={id};")  #La asignacion del execute a una variable la usamos cuando buscamos datos que despues vayamos a mostrar. En insert y delete no hacen falta.
     result = res.fetchall()
+    conexion.close()
     return result[0]
+
+
+def delete_by(id):
+    conexion = sqlite3.connect(ORIGIN_DATA)
+    cur = conexion.cursor()
+    cur.execute(f"delete from movements where id={id};")
+    conexion.commit()  #Valida el delete. Cuando se hacen DELETE tambien hay que usarlo sino no se confirma el borrado.
+    conexion.close()
