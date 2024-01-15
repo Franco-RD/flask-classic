@@ -21,3 +21,9 @@ ul.errors{
     font-weight: bold;
     font-size: 0.8em;
 }
+
+ul.flashes{
+    color: greenyellow;
+    font-weight: bold;
+    font-size: 0.9em;
+}

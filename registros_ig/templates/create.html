@@ -6,7 +6,7 @@
 
     {{dataForm.date.label}}  {# date.label es el parametro que se le paso a la variable label al declararla en la clase MovementsForm #}
     {{dataForm.date}}  {# date es la variable del objeto form en routes, de la clase MovementsForm declarada en forms.py #}
-    {% if dataForm.date.errors %}
+    {% if dataForm.date.errors %}  {# en dataForm.date.errors ya vienen capturados los errores de este campo, no hace falta pasarlos por el render template aparte #}
         <ul class="errors">
         {% for error in dataForm.date.errors %}
             <li>{{ error }}</li>
@@ -46,13 +46,5 @@
         
     
 </form>
-
-<article>
-    <ul>
-        {% for item in errors %}
-        <li>{{item}}</li>
-        {% endfor %}
-    </ul>
-</article>
 
 {% endblock %}

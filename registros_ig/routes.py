@@ -1,5 +1,5 @@
 from registros_ig import app
-from flask import render_template, request, redirect  
+from flask import render_template, request, redirect, flash  
 from registros_ig.models import *
 from datetime import date
 from registros_ig.forms import MovementsForm
@@ -37,10 +37,11 @@ def create():
     else:                 
         if form.validate_on_submit():
             insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos. Hay que pasar los datos de esta manera porque si se pasa solo request.form da error.
+            flash(f"Movimiento {request.form['concept']} registrado correctamente")
             return redirect("/")
         
         else:
-            return render_template("create.html", errors = {}, dataForm = form)
+            return render_template("create.html", dataForm = form)
         
         
 
@@ -53,4 +54,5 @@ def delete(id):
     
     else: 
         delete_by(id)
+        flash("Movimiento borrado correctamente")
         return redirect("/")
