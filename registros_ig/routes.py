@@ -3,6 +3,7 @@ from flask import render_template, request, redirect
 from registros_ig.models import *
 from datetime import date
 
+
 def validarFormulario(datosFormulario):
     errores = []
     hoy = str(date.today())  #Fecha del dia para validacion. No se tiene que poder agregar gastos de dias mayores a hoy

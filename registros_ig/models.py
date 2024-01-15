@@ -1,13 +1,11 @@
 import sqlite3
 from registros_ig import ORIGIN_DATA
-
+from registros_ig.conexion import Conexion
 
 def select_all():
-    conexion = sqlite3.connect(ORIGIN_DATA)
-    cur = conexion.cursor()
-    res = cur.execute("select * from movements;")  #res es como un objeto gigante con un monton de cosas
-    filas = res.fetchall()  #res.fetchall() si trae los datos de las columnas nada mas en un a lista de tuplas (1, 2024-01-01, Nomina Enero, 1500)
-    columnas = res.description  #Nombres de columnas en lista de tuplas  (id,0000) (date,0000) (concept,0000) (quantity,0000)
+    conectar = Conexion("select * from movements")
+    filas = conectar.res.fetchall()  #res.fetchall() si trae los datos de las columnas nada mas en un a lista de tuplas (1, 2024-01-01, Nomina Enero, 1500)
+    columnas = conectar.res.description  #Nombres de columnas en lista de tuplas  (id,0000) (date,0000) (concept,0000) (quantity,0000)
 
     lista_diccionario = []
     
@@ -20,30 +18,27 @@ def select_all():
                                              # Cuando termina este for de agregar todos los datos de una fila al diccionario, lo agrega a la lista de diccionarios y pasa a la siguiente fila.
         lista_diccionario.append(diccionario)
 
-    conexion.close()
+    conectar.con.close()
     return lista_diccionario
 
 
 def insert(registroForm):
-    conexion = sqlite3.connect(ORIGIN_DATA)
-    cur = conexion.cursor()
-    cur.execute("insert into movements (date, concept, quantity) values (?,?,?);", registroForm)  #Se puede poner ? y luego de la ", se ponen los registros en orden que irian en esos campos. registroForm ya tiene los 3 datos ya que es una lista
-    conexion.commit()  #Valida los INSERT. Cuando se hacen INSERT hay que usarlo. Hasta que no se hace el commit no se mandan los insert que hagamos
-    conexion.close()
+    conectarInsert = Conexion("insert into movements (date, concept, quantity) values (?,?,?);", registroForm)
+    #cur.execute("insert into movements (date, concept, quantity) values (?,?,?);", registroForm)  #Se puede poner ? y luego de la ", se ponen los registros en orden que irian en esos campos. registroForm ya tiene los 3 datos ya que es una lista
+    conectarInsert.con.commit()  #Valida los INSERT. Cuando se hacen INSERT hay que usarlo. Hasta que no se hace el commit no se mandan los insert que hagamos
+    conectarInsert.con.close()
 
 
 def select_by(id):
-    conexion = sqlite3.connect(ORIGIN_DATA)
-    cur = conexion.cursor()
-    res = cur.execute(f"select * from movements where id={id};")  #La asignacion del execute a una variable la usamos cuando buscamos datos que despues vayamos a mostrar. En insert y delete no hacen falta.
-    result = res.fetchall()
-    conexion.close()
+    conectarSelectBy = Conexion(f"select * from movements where id={id};")
+    #res = cur.execute(f"select * from movements where id={id};")  #La asignacion del execute a una variable la usamos cuando buscamos datos que despues vayamos a mostrar. En insert y delete no hacen falta.
+    result = conectarSelectBy.res.fetchall()
+    conectarSelectBy.con.close()
     return result[0]
 
+#Los cur.execute se comentaron porque pasaron a la clase Conexion, se dejan para el comentario nada mas. 
 
 def delete_by(id):
-    conexion = sqlite3.connect(ORIGIN_DATA)
-    cur = conexion.cursor()
-    cur.execute(f"delete from movements where id={id};")
-    conexion.commit()  #Valida el delete. Cuando se hacen DELETE tambien hay que usarlo sino no se confirma el borrado.
-    conexion.close()
+    conectarDeleteBy = Conexion(f"delete from movements where id={id};")
+    conectarDeleteBy.con.commit()  #Valida el delete. Cuando se hacen DELETE tambien hay que usarlo sino no se confirma el borrado.
+    conectarDeleteBy.con.close()
