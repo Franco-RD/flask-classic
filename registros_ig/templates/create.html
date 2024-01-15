@@ -2,14 +2,48 @@
 {% block section %} 
 <form action="/new" method="post">
 
-    <label>Fecha</label>
+    {{dataForm.csrf_token}}
+
+    {{dataForm.date.label}}  {# date.label es el parametro que se le paso a la variable label al declararla en la clase MovementsForm #}
+    {{dataForm.date}}  {# date es la variable del objeto form en routes, de la clase MovementsForm declarada en forms.py #}
+    {% if dataForm.date.errors %}
+        <ul class="errors">
+        {% for error in dataForm.date.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{dataForm.concept.label}}  
+    {{dataForm.concept}}  
+    {% if dataForm.concept.errors %}
+        <ul class="errors">
+        {% for error in dataForm.concept.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{dataForm.quantity.label}}  
+    {{dataForm.quantity}}
+    {% if dataForm.quantity.errors %}
+        <ul class="errors">
+        {% for error in dataForm.quantity.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{dataForm.submit}}
+
+
+    <!--<label>Fecha</label>
     <input type="date" name="date" value="{{dataForm['date']}}">
     <label>Concepto</label>
     <input type="text" name="concept" placeholder="Ingrese un concepto" value="{{dataForm['concept']}}">
     <label>Monto</label>
-    <input type="number" name="quantity" placeholder="Ingrese monto" step="0.01" value="{{dataForm['quantity']}}"> {# El step es para que sea decimal con 2 valores despues de la coma #}
+    <input type="number" name="quantity" placeholder="Ingrese monto" step="0.01" value="{{dataForm['quantity']}}"> {# El step es para que sea decimal con 2 valores despues de la coma #} -->
         
-    <button type="submit">Submit</button>
     
 </form>
 

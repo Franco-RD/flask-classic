@@ -2,6 +2,7 @@ from registros_ig import app
 from flask import render_template, request, redirect  
 from registros_ig.models import *
 from datetime import date
+from registros_ig.forms import MovementsForm
 
 
 def validarFormulario(datosFormulario):
@@ -28,17 +29,20 @@ def index():
 
 @app.route("/new", methods=["GET", "POST"])
 def create():
+    form = MovementsForm()
+
     if request.method == "GET":
-        return render_template("create.html", dataForm = {})
+        return render_template("create.html", dataForm = form)
     
-    else: 
-        errores = validarFormulario(request.form)
-        if errores:
-            return render_template("create.html", errors = errores, dataForm = request.form)
-        
-        else:
+    else:                 
+        if form.validate_on_submit():
             insert([request.form['date'], request.form['concept'], request.form['quantity']])  #Llamo a la funcion para insertar datos. Hay que pasar los datos de esta manera porque si se pasa solo request.form da error.
             return redirect("/")
+        
+        else:
+            return render_template("create.html", errors = {}, dataForm = form)
+        
+        
 
 
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
