@@ -15,7 +15,7 @@
     {% endif %}
 
     {{dataForm.concept.label}}  
-    {{dataForm.concept}}  
+    {{dataForm.concept(placeholder="Ingrese el concepto")}}  {# Entre () se pueden pasar parametros para configurar el campo como en los input de html normal #}
     {% if dataForm.concept.errors %}
         <ul class="errors">
         {% for error in dataForm.concept.errors %}
@@ -25,7 +25,7 @@
     {% endif %}
 
     {{dataForm.quantity.label}}  
-    {{dataForm.quantity}}
+    {{dataForm.quantity(placeholder="Ingrese el monto", step="0.01", autocomplete="off")}}
     {% if dataForm.quantity.errors %}
         <ul class="errors">
         {% for error in dataForm.quantity.errors %}
